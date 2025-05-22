@@ -23,5 +23,24 @@ namespace MovieRental.Controllers
 	        return Ok(_features.Save(rental));
         }
 
-	}
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Rental.Rental>), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult Get([FromQuery] string customerName)
+        {
+            var rentals = _features.GetRentalsByCustomerName(customerName);
+            
+            if (string.IsNullOrEmpty(customerName))
+            {
+                return BadRequest("Customer name is required.");
+            }
+            if (rentals == null || !rentals.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(rentals);
+        }
+    }
 }
