@@ -27,6 +27,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseExceptionHandler("/error");
+
 //there is no need to instantiate the dbcontext here
 //using (var client = new MovieRentalDbContext())
 //{

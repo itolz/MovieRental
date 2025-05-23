@@ -24,7 +24,15 @@ namespace MovieRental.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Movie.Movie movie)
         {
-	        return Ok(_features.Save(movie));
+            //try-catch implemented for this specific endpoint. For all other endpoints there is a Global Exception Handler
+            try
+            {
+                return Ok(_features.Save(movie));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
         }
     }
 }
