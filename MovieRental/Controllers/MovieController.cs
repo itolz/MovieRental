@@ -18,7 +18,7 @@ namespace MovieRental.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-	        return Ok(_features.GetAll());
+	        return Ok(_features.GetAll().ToList());
         }
 
         [HttpPost]
