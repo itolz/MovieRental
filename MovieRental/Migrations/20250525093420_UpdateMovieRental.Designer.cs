@@ -10,8 +10,8 @@ using MovieRental.Data;
 namespace MovieRental.Migrations
 {
     [DbContext(typeof(MovieRentalDbContext))]
-    [Migration("20250523110517_Customer")]
-    partial class Customer
+    [Migration("20250525093420_UpdateMovieRental")]
+    partial class UpdateMovieRental
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,6 +67,9 @@ namespace MovieRental.Migrations
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 

@@ -5,21 +5,12 @@
 namespace MovieRental.Migrations
 {
     /// <inheritdoc />
-    public partial class Customer : Migration
+    public partial class UpdateMovieRental : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             this.Down(migrationBuilder);
-
-            migrationBuilder.DropTable(
-                name: "Rentals");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
-
-            migrationBuilder.DropTable(
-                name: "Movies");
 
             migrationBuilder.CreateTable(
                 name: "Customers",
@@ -54,8 +45,9 @@ namespace MovieRental.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     DaysRented = table.Column<int>(type: "INTEGER", nullable: false),
-                    MovieId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Price = table.Column<double>(type: "REAL", nullable: false),
                     PaymentMethod = table.Column<string>(type: "TEXT", nullable: false),
+                    MovieId = table.Column<int>(type: "INTEGER", nullable: false),
                     CustomerId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -89,15 +81,14 @@ namespace MovieRental.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            DropTableIfExists(migrationBuilder, "Rentals");
             DropTableIfExists(migrationBuilder, "Customers");
             DropTableIfExists(migrationBuilder, "Movies");
-            DropTableIfExists(migrationBuilder, "Rentals");
         }
 
         private void DropTableIfExists(MigrationBuilder migrationBuilder, string tableName)
         {
             string sql = $"DROP TABLE IF EXISTS [{tableName}];";
-
             migrationBuilder.Sql(sql);
         }
     }

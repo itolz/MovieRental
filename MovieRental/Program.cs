@@ -1,5 +1,7 @@
 using MovieRental.Data;
 using MovieRental.Movie;
+using MovieRental.PaymentProviders;
+using MovieRental.Price;
 using MovieRental.Rental;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,9 +11,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEntityFrameworkSqlite().AddDbContext<MovieRentalDbContext>();
 
+builder.Services.AddScoped<IPriceCalculator, PriceCalculator>();
+
 //change to scoped so it can be injected in the RentalController (since dbContext is scoped)
 builder.Services.AddScoped<IRentalFeatures, RentalFeatures>();
-//builder.Services.AddSingleton<IRentalFeatures, RentalFeatures>();
+
+builder.Services.AddScoped<IPaymentProvider, PayPalProvider>();
+builder.Services.AddScoped<IPaymentProvider, MbWayProvider>();
+builder.Services.AddScoped<IPaymentProvider, FailPaymentProvider>();
 
 var app = builder.Build();
 

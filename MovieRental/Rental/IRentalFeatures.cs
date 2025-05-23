@@ -2,6 +2,6 @@
 
 public interface IRentalFeatures
 {
-	Task<Rental> Save(Rental rental);
-	IEnumerable<Rental> GetRentalsByCustomerName(string customerName);
+    public Task<Rental> RentMovie(Rental rental);
+    IEnumerable<Rental> GetRentalsByCustomerName(string customerName);
 }
