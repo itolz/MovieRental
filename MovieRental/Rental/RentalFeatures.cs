@@ -22,7 +22,10 @@ namespace MovieRental.Rental
 		public IEnumerable<Rental> GetRentalsByCustomerName(string customerName)
         {
             return _movieRentalDb.Rentals
-            .Where(r => r.CustomerName == customerName).ToList();
+                 .Include(r => r.Movie)
+                 .Include(r => r.Customer)
+                 .Where(r => r.Customer != null && r.Customer.CustomerName == customerName)
+                 .ToList();
         }
 	}
 }
