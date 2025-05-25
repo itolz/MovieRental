@@ -1,6 +1,65 @@
 @MovieRental_HostAddress = http://localhost:5219
 
-GET {{MovieRental_HostAddress}}/weatherforecast/
+### POST A Rental Using MBWay Payment Provider
+
+POST {{MovieRental_HostAddress}}/rental
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 10,
+  "daysRented": 1,
+  "movie": {
+    "id": 1,
+    "title": "The Apprentice"
+  },
+  "customer": {
+    "customerId": 1,
+    "customerName": "Italo Farias"
+  },
+  "price": 2.00,
+  "paymentMethod": "MBWay",
+  "movieId": 1,
+  "customerId": 1,
+  "priceId": 1
+}
+
+### Get Rental by Customer Name
+
+GET {{MovieRental_HostAddress}}/rental?CustomerName=Italo%20Farias
+Accept: application/json
+
+###
+
+### Extensibilty: A Rental Using Fail Payment Provider. It causes a not implemented exception that is caught by Global Exception Handler
+
+POST {{MovieRental_HostAddress}}/rental
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 11,
+  "daysRented": 1,
+  "movie": {
+    "id": 1,
+    "title": "The Apprentice"
+  },
+  "customer": {
+    "customerId": 1,
+    "customerName": "Italo Farias"
+  },
+  "price": 2.00,
+  "paymentMethod": "FailPayment",
+  "movieId": 1,
+  "customerId": 1,
+  "priceId": 1
+}
+
+###
+
+### Global Exception Handler Checker
+
+GET {{MovieRental_HostAddress}}/error/ErrorHandlerHealthCheck
 Accept: application/json
 
 ###
