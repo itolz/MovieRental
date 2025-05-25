@@ -21,8 +21,5 @@ namespace MovieRental.Rental
 
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
-
-        //[ForeignKey("Price")]
-        //public int PriceId { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace MovieRental.Movie
             return _movieRentalDb.Movies.AsNoTracking();
         }
 
-        private List<Movie> GetAllPaginated(int skip = 0, int take = 1000)
+        public IEnumerable<Movie> GetAllPaginated(int skip = 0, int take = 1000)
         {
             return _movieRentalDb.Movies
                 .AsNoTracking()

@@ -2,6 +2,7 @@
 using MovieRental.Data;
 using MovieRental.PaymentProviders;
 using MovieRental.Price;
+using System.Transactions;
 
 namespace MovieRental.Rental
 {
@@ -17,20 +18,23 @@ namespace MovieRental.Rental
             _priceCalculator = priceCalculator;
         }
 
-        public async Task<Rental> RentMovie(Rental rental)
+        public async Task<Rental> Save(Rental rental)
         {
-            var processResult = await PaymentProcess(rental);
-            //var processResult = true; // Simulating payment process for the sake of example
-            if (processResult)
-            {
-                _movieRentalDb.Rentals.Add(rental);
-                await _movieRentalDb.SaveChangesAsync();
-            }
-            else
-            {
-                throw new Exception("Payment failed");
-            }
+            //using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            //{
+                var processResult = await PaymentProcess(rental);
 
+                if (processResult)
+                {
+                    _movieRentalDb.Rentals.Add(rental);
+                    await _movieRentalDb.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("Payment failed");
+                }
+            //}
+            
             return rental;
         }
 
@@ -42,23 +46,6 @@ namespace MovieRental.Rental
                  .Where(r => r.Customer != null && r.Customer.CustomerName == customerName)
                  .ToList();
         }
-
-
-        //private async Task<Rental> SaveAsync(Rental rental)
-        //{
-        //    //if (rental.Movie != null)
-        //    //{
-        //    //    _movieRentalDb.Entry(rental.Movie).State = EntityState.Unchanged;
-        //    //}
-        //    //if (rental.Customer != null)
-        //    //{
-        //    //    _movieRentalDb.Entry(rental.Customer).State = EntityState.Unchanged;
-        //    //}
-        //    //Rental rentalLocal = new Rental();
-        //    _movieRentalDb.Rentals.Add(rental);
-        //    await _movieRentalDb.SaveChangesAsync();
-        //    return rental;
-        //}
 
         private Task<bool> PaymentProcess(Rental rental)
         {
